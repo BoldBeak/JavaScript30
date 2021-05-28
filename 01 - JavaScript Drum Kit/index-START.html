@@ -58,9 +58,32 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-
+  function playSound(e) {
+    
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`)
+    if(!audio) return; //stops function from continuing if there is no audio assoiciated with a key press.
+    audio.currentTime = 0; // rewind to start
+    audio.play();
+    key.classList.add('playing');
+  }
+   
+function removeTransition(e) {
+  if(e.propertyName !== 'transform') return; //skip if it is not a transform
+  
+  this.classList.remove('playing');
+}
+const keys = document.querySelectorAll('.key');
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+window.addEventListener('keydown', playSound);
 </script>
 
 
 </body>
 </html>
+
+<!-- Algorithm for JS
+1. event listener for the window for keypress
+2. ensure audio restarts from beginning on each press;
+3. use query to link audio to key
+-->
